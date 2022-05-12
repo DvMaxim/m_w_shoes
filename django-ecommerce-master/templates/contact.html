@@ -1,0 +1,73 @@
+{% extends "account/base.html" %}
+
+{% load static %}
+{% load i18n %}
+{% load account %}
+
+{% block head_title %}{% trans "Связаться с нами" %}{% endblock %}
+
+{% block content %}
+
+<div class="account-page">
+      <div class="container">
+            <div class="row">
+
+                <div class="col-2">
+
+                    <div class="form-container" id="contact-form-container">
+
+                        <div class="orange_rectangle" id="up-rect">
+                            <img src="{% static 'img/images/registration_pic.png'%}" width="11%">
+                        </div>
+
+                        <div class="form-btn" id="contact-form-btn">
+
+                            <span class="contact-title">Напишите нам, мы всегда рады !</span>
+
+                        </div>
+
+                        <div class="contact-messages">
+
+                            <p class="form-container-p">{% trans "Если у вас возникли какие-то вопросы, то вы смело можете обратиться к нам за помощью." %}</p>
+
+                            <p class="form-container-p">{% blocktrans %}Пожалуйста, не стесняйтесь, мы ценим ваше мнение.{% endblocktrans %}</p>
+
+                        </div>
+
+                        <form method="post" action="{% url 'core:contact' %}" class="contact-form">
+
+                            {% csrf_token %}
+
+                            <tr>
+                                <th>
+                                    <label for="id_letter">Ваше сообщение:</label>
+                                </th>
+                                <td>
+                                    <textarea name="letter" cols="40" rows="10" required id="id_letter">
+                                    </textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    <label for="id_email">Ваша почта:</label>
+                                </th>
+                                <td>
+                                    <input type="email" name="destination_email" required id="id_email" placeholder="Ваша почта">
+                                </td>
+                            </tr>
+
+                            <input class="btn" type="submit" value="Отправить" name="contact-btn" />
+
+                        </form>
+
+                        <div class="orange_rectangle" id="down-rect"></div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+  </div>
+
+{% endblock %}

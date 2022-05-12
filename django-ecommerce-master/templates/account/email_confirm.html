@@ -1,0 +1,57 @@
+{% extends "account/base.html" %}
+
+{% load static %}
+{% load i18n %}
+{% load account %}
+
+{% block head_title %}{% trans "Подтвердите ваш E-mail" %}{% endblock %}
+
+
+{% block content %}
+
+ <div class="account-page">
+      <div class="container">
+			<div class="row">
+
+				<div class="col-2">
+
+					<div class="form-container">
+
+						<div class="orange_rectangle" id="up-rect">
+							<img src="{% static 'img/images/registration_pic.png'%}" width="15%">
+						</div>
+
+						<div class="sign-out">
+							<div class="form-btn">
+								<span>{% trans 'E-mail' %}
+								</span>
+								<!-- <hr id="Indicator"> -->
+							</div>
+
+							{% if confirmation %}
+
+                            {% user_display confirmation.email_address.user as user_display %}
+
+                            <p>{% blocktrans with confirmation.email_address.email as email %}Пожалуйста, подтвердите, что <a href="mailto:{{ email }}">{{ email }}</a> это e-mail адресс для пользователя {{ user_display }}.{% endblocktrans %}</p>
+
+                            <a href="{% url 'account_confirm_email' confirmation.key %}" class="btn">Подтвердить</a>
+
+                            {% else %}
+
+                            {% url 'account_email' as email_url %}
+
+                            <p>{% blocktrans %}Срок действия этой ссылки для подтверждения по электронной почте истек или она недействительна. Пожалуйста, <a href="{{ email_url }}">отправьте новый запрос подтверждения по данному адрессу</a>.{% endblocktrans %}</p>
+
+                            {% endif %}
+
+                        </div>
+
+						<div class="orange_rectangle" id="down-rect"></div>
+
+					</div>
+				</div>
+			</div>
+	  </div>
+  </div>
+
+{% endblock %}

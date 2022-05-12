@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head_title %}
+M/W shoes - Cart
+{% endblock %}
+
+
+{% block content %}
+
+
+    <div class="container" id="cart-container">
+        <div class="table-responsive text-nowrap">
+            <h2 id="main-title">Корзина</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Название</th>
+                    <th scope="col">Цена</th>
+                    <th scope="col">Количество</th>
+                    <th scope="col">Денег сэкономлено</th>
+                    <th scope="col">Общая цена</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order_item in object.items.all %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ order_item.item.title }}</td>
+                    <td>{{ order_item.item.price }}</td>
+                    <td>
+                        <a href="{% url 'core:remove-single-item-from-cart' order_item.item.slug %}"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                        {{ order_item.quantity }}
+                        <a href="{% url 'core:add-single-item-to-cart' order_item.item.slug %}"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    </td>
+                    <td>
+                        {% if order_item.item.discount_price %}
+                            <span>${{ order_item.get_amount_saved }}</span>
+                        {% else %}
+                            <span>Скидка отсутствует</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if order_item.item.discount_price %}
+                            ${{ order_item.get_total_discount_item_price }}
+                        {% else %}
+                            ${{ order_item.get_total_item_price }}
+                        {% endif %}
+                        <a style='color: red;' href="{% url 'core:remove-all-items-from-cart' order_item.item.slug %}">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan='6'>Ваша корзина пуста. Для работы с ней, пожалуйста, добавьте желаемые товары.</td>
+                </tr>
+
+                {% endfor %}
+
+                {% if object.get_total %}
+
+                <tr>
+                    <td colspan="5"><b>Сумма заказа</b></td>
+                    <td><b>${{ object.get_total }}</b></td>
+                </tr>
+
+                {% endif %}
+                </tbody>
+            </table>
+            <br>
+            <br>
+            <a class='btn btn-primary float-right' href="{% url 'core:products' %}">Продолжить покупки</a>
+
+            {% if object.get_total %}
+            <a class='btn btn-primary float-right' href="{% url 'core:confirm-offer' %}">Подтвердить заказ</a>
+            {% endif %}
+        </div>
+
+    </div>
+  
+
+
+{% endblock content %}
+
+

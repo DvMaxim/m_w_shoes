@@ -1,0 +1,140 @@
+{% extends "account/base.html" %}
+
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{% trans "Личный кабинет" %}{% endblock %}
+
+{% block content %}
+  <div class="account-page">
+
+      <div class="container">
+
+			<div class="row">
+
+                <div class="account-side-small-img">
+
+                    <img src="{% static 'img/images/women_shoes_account.png'%}" class="account-side-small-img">
+
+                </div>
+
+				<div class="col-2">
+
+					<div class="form-container" id="account-info-form-container">
+
+                        <div class="orange_rectangle" id="up-rect">
+                          <img src="{% static 'img/images/registration_pic.png'%}" width="15%">
+                        </div>
+
+                        <div class="registration_content">
+
+                              <form method="post" action="{% url 'core:account-info' %}">
+
+                                  {% csrf_token %}
+
+                                  <div id="div_id_first_name" class="form-group">
+
+<!--                                    <label for="id_first_name" class="col-form-label  requiredField">Ваше имя</label>-->
+                                      {{ form.first_name.label_tag }}
+                                    <div class="">
+<!--                                      <input type="text" name="first_name" placeholder="Введите имя" autofocus="autofocus" minlength="1" maxlength="150" class="textinput textInput form-control" required id="id_first_name">-->
+                                      {{ form.first_name }}
+                                    </div>
+                                  </div>
+
+
+                                  <div id="div_id_last_name" class="form-group">
+
+<!--                                    <label for="id_last_name" class="col-form-label  requiredField">Ваша фамилия</label>-->
+                                        {{ form.last_name.label_tag }}
+                                    <div class="">
+                                        {{ form.last_name }}
+<!--                                      <input type="text" name="last_name" placeholder="Введите фамилию" class="textinput textInput form-control" required id="id_last_name">-->
+                                    </div>
+
+                                  </div>
+
+
+                                  <div id="div_id_email" class="form-group">
+
+<!--                                    <label for="id_email" class="col-form-label ">Ваш E-mail</label>-->
+                                        {{ form.user_email.label_tag }}
+                                    <div class="">
+                                        {{ form.user_email }}
+<!--                                      <input type="email" name="user_email" placeholder="Введите E-mail" class="textinput textInput form-control" id="id_email">-->
+                                    </div>
+
+                                  </div>
+
+<!--                                  <div id="div_id_password2" class="form-group">-->
+
+<!--                                    <label for="id_password2" class="col-form-label  requiredField">-->
+<!--                                    Повторите пароль-->
+<!--                                    </label>-->
+
+<!--                                    <div class="">-->
+
+<!--                                      <input type="password" name="password2" placeholder="Повторите пароль" class="textinput textInput form-control" required id="id_password2">-->
+
+<!--                                    </div>-->
+
+<!--                                  </div>-->
+
+                                    <button class='btn btn-primary' type="submit">{% trans 'Сохранить' %} &raquo;</button>
+
+                                  </form>
+
+                        </div>
+
+                        <div class="orange_rectangle" id="down-rect"></div>
+                    </div>
+				</div>
+
+                <img src="{% static 'img/images/man_shoes_account.png'%}" class="account-side-small-img">
+
+			</div>
+		</div>
+
+
+<div class="container" id="cart-container">
+        <div class="table-responsive text-nowrap">
+            <h2 id="main-title">Заказы в обработке</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Информация о заказе</th>
+                    <th scope="col">Стоимость заказа</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>
+                        {% for order_item in order.items.all %}
+
+                        {{order_item.item.title}} в количестве {{order_item.quantity}}
+                        <br>
+
+                        {% endfor %}
+                    </td>
+                    <td>${{ order.get_total }}</td>
+
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan='3'>Похоже вы еще ничего не заказали. Пожалуйста, выполните заказ для дальнейшей работы.</td>
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+  </div>
+{% endblock %}
